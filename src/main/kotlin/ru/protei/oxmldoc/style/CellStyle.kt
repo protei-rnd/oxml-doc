@@ -5,6 +5,4 @@ class CellStyle(val id: Int,
                 val font: Font,
                 val fill: Fill,
                 val numFormat: NumberFormat
-) {
-
-}
+)
