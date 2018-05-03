@@ -1,6 +1,6 @@
-package ru.protei.oxmldoc.common
+package ru.protei.oxmldoc.common;
 
-enum class RowsLimitRule {
+public enum RowLimitRules {
 
     /**
      * Ignore limit value, allow to append any number of rows
