@@ -1,10 +1,10 @@
 package ru.protei.oxmldoc.style
 
 class RowStyle(
-        val height: Int?,
+        val height: Int,
         val cellStyle: CellStyle?,
-        val borderBottom: Boolean?,
-        val borderTop: Boolean?
+        val borderBottom: Boolean,
+        val borderTop: Boolean
 ) {
     /**
      * @param height
