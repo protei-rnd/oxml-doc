@@ -24,16 +24,13 @@ public class SmartStreamFactory implements StreamFactory {
 
     public SmartStreamFactory(int maxOpenedFiles) {
         this.maxOpenedFiles = maxOpenedFiles;
-        connInfo = new LinkedList<SmartStreamFactory.ConnInfo>();
+        connInfo = new LinkedList<>();
     }
 
     public int getMaxOpenedFiles() {
         return maxOpenedFiles;
     }
 
-    /* (non-Javadoc)
-     * @see protei.oxd.sys.SmartStreamFactory#getOpenedStreamsNumber()
-     */
     @Override
     public int getOpenedStreamsNumber() {
         lock.lock();
@@ -44,9 +41,6 @@ public class SmartStreamFactory implements StreamFactory {
         }
     }
 
-    /* (non-Javadoc)
-     * @see protei.oxd.sys.SmartStreamFactory#allocate(protei.oxd.sys.ISmartStreamConsumer)
-     */
     @Override
     public OutputStream allocate(StreamConsumer consumer) throws IOException {
         return new SmartOutputStream(consumer);

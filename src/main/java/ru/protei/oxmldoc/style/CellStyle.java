@@ -17,7 +17,7 @@ public class CellStyle
     }
 
     /**
-     * @return the idx
+     * @return the id
      */
     public int getId()
     {

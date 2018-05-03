@@ -129,9 +129,9 @@ public class WorkBookWriter {
     }
 
     private int findDescriptorIndex(WorkSheet sheet) {
-        for (int idx = 0; idx < sheets.size(); idx++) {
-            if (sheets.get(idx).sheet == sheet)
-                return idx;
+        for (int id = 0; id < sheets.size(); id++) {
+            if (sheets.get(id).sheet == sheet)
+                return id;
         }
 
         return -1;
