@@ -1,9 +1,9 @@
-package ru.protei.oxmldoc.style.enums
+package ru.protei.oxmldoc.style.enums;
 
-enum class FillPattern {
+public enum FillPattern {
     NONE,
     SOLID,
-    MEDUM_GRAY,
+    MEDIUM_GRAY,
     DARK_GRAY,
     LIGHT_GRAY,
     DARK_HORIZONTAL,
