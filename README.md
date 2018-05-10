@@ -8,7 +8,8 @@ Library for streaming writing/reading xlsx files;
 | master |[![Build Status](https://travis-ci.org/protei-rnd/oxml-doc.svg?branch=master)](https://travis-ci.org/protei-rnd/oxml-doc)|
 
 ---
-#How to use:
+
+# How to use:
 ```java
 WorkSheet sheet = writer.createNewSheet("sheet");
 Row row = new Row();
