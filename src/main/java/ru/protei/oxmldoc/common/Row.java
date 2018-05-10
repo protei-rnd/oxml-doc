@@ -16,6 +16,9 @@ public class Row {
         this.rowStyle = style;
     }
 
+    public Row() {
+    }
+
     public List<Cell<?>> getCells() {
         return cells;
     }
@@ -78,7 +81,7 @@ public class Row {
         return this;
     }
 
-    private void clear() {
+    public void clear() {
         cells.clear();
     }
 }

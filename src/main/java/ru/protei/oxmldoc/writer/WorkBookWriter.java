@@ -20,8 +20,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-public class WorkBookWriter {
-    private class SheetDescription {
+public class WorkBookWriter implements AutoCloseable {
+    private class SheetDescriptor {
         WorkSheet sheet;
         StreamConsumer consumer;
     }
@@ -41,7 +41,7 @@ public class WorkBookWriter {
     private ZipOutputStream zipOut;
     private WorkSheet currentSheet;
     private final String creator = "OpenXmlDoc-API";
-    private final List<SheetDescription> sheets = new ArrayList<>();
+    private final List<SheetDescriptor> sheets = new ArrayList<>();
     private final List<Font> fonts = new ArrayList<>();
     private final List<NumberFormat> numberFormats = new ArrayList<>();
     private final List<Fill> fills = new ArrayList<>();
@@ -121,7 +121,7 @@ public class WorkBookWriter {
         WorkSheet sheet = null;
 
         // search last sheet with same name
-        for (SheetDescription d : sheets)
+        for (SheetDescriptor d : sheets)
             if (d.sheet.getSourceName() != null && d.sheet.getSourceName().equals(name) || d.sheet.getName().equals(name))
                 sheet = d.sheet;
 
@@ -139,7 +139,7 @@ public class WorkBookWriter {
 
     public WorkSheet createSplittedClone(WorkSheet sheet) throws IOException {
 
-        final SheetDescription desc = new SheetDescription();
+        final SheetDescriptor desc = new SheetDescriptor();
         desc.consumer = new SmartStreamConsumer();
 
         log.debug("create temp file for excell work sheet (clone): " + sheet.getName());
@@ -165,7 +165,7 @@ public class WorkBookWriter {
     }
 
     public WorkSheet createNewSheet(String name) throws IOException {
-        SheetDescription desc = new SheetDescription();
+        SheetDescriptor desc = new SheetDescriptor();
         desc.consumer = new SmartStreamConsumer();
 
         log.debug("create temp file for excell work sheet: " + name);
@@ -213,9 +213,9 @@ public class WorkBookWriter {
         }
     }
 
-    protected void doWrite(ZipOutputStream zipOut) throws IOException {
+    private void doWrite(ZipOutputStream zipOut) throws IOException {
         int c = 1;
-        for (SheetDescription d : sheets) {
+        for (SheetDescriptor d : sheets) {
             d.sheet.close();
             zipOut.putNextEntry(new ZipEntry("xl/worksheets/sheet" + c + ".xml"));
             InputStream rawIn = d.consumer.createInput();
@@ -298,7 +298,7 @@ public class WorkBookWriter {
                 .append("<sheets>\n");
 
         for (int i = 0; i < sheets.size(); i++) {
-            SheetDescription desc = sheets.get(i);
+            SheetDescriptor desc = sheets.get(i);
             wbookContent.append("<sheet name=\"").append(WorkSheet.escapeXML(desc.sheet.getName())).append(
                     "\" sheetId=\"").append(i + 1).append("\" r:id=\"")
                     .append(desc.sheet.getId()).append("\"/>\n");
@@ -314,7 +314,7 @@ public class WorkBookWriter {
                         "<Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\">\n");
 
         for (int i = 0; i < sheets.size(); i++) {
-            SheetDescription desc = sheets.get(i);
+            SheetDescriptor desc = sheets.get(i);
             wbookRels
                     .append("<Relationship Id=\"")
                     .append(desc.sheet.getId())
@@ -351,20 +351,20 @@ public class WorkBookWriter {
                 stylesCnt.append("<sz val=\"").append(f.getFontSize()).append("\"/>");
 
             if (f.getColor() != null)
-                stylesCnt.append("<color rgb=\"" + WorkSheet.escapeXML(f.getColor()) + "\"/>");
+                stylesCnt.append("<color rgb=\"").append(WorkSheet.escapeXML(f.getColor())).append("\"/>");
             else if (f.getColorTheme() != null)
                 stylesCnt.append("<color theme=\"").append(WorkSheet.escapeXML(f.getColorTheme())).append("\"/>");
 
             stylesCnt.append("<name val=\"").append(WorkSheet.escapeXML((f.getName() != null ? f.getName() : "Arial"))).append("\"/>");
 
             if (f.getFamily() != 0)
-                stylesCnt.append("<family val=\"" + f.getFamily() + "\"/>");
+                stylesCnt.append("<family val=\"").append(f.getFamily()).append("\"/>");
 
             if (f.getCharset() != null)
-                stylesCnt.append("<charset val=\"" + WorkSheet.escapeXML(f.getCharset()) + "\"/>");
+                stylesCnt.append("<charset val=\"").append(WorkSheet.escapeXML(f.getCharset())).append("\"/>");
 
             if (f.getScheme() != null)
-                stylesCnt.append("<scheme val=\"" + WorkSheet.escapeXML(f.getScheme()) + "\"/>");
+                stylesCnt.append("<scheme val=\"").append(WorkSheet.escapeXML(f.getScheme())).append("\"/>");
 
             if (f.isBold())
                 stylesCnt.append("<b/>");
@@ -493,38 +493,25 @@ public class WorkBookWriter {
 
 
     public void writeTo(OutputStream out) throws IOException {
-
-        ZipOutputStream zout = new ZipOutputStream(out);
-
-        try {
+        try (ZipOutputStream zout = new ZipOutputStream(out)) {
             doWrite(zout);
-        } finally {
-            try {
-                zout.close();
-            } catch (Throwable e) {
-            }
         }
     }
 
     public void writeTo(File f) throws IOException {
-        OutputStream out = new FileOutputStream(f, false);
-        try {
+        try (OutputStream out = new FileOutputStream(f, false)) {
             writeTo(out);
-        } finally {
-            try {
-                out.close();
-            } catch (Throwable e) {
-            }
         }
     }
 
+    @Override
     public void close() throws IOException {
         if (zipOut != null) {
             doWrite(zipOut);
             zipOut = null;
         }
 
-        for (SheetDescription d : sheets) {
+        for (SheetDescriptor d : sheets) {
             d.sheet.close();
             d.consumer.release();
         }

@@ -3,11 +3,11 @@ package ru.protei.oxmldoc.style;
 public class Color {
     private final int rgb;
 
-    public Color (int rgb){
+    public Color(int rgb) {
         this.rgb = rgb;
     }
 
-    public Color (java.awt.Color awtColor){
+    public Color(java.awt.Color awtColor) {
         rgb = awtColor.getRGB();
     }
 

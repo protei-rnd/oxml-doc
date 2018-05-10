@@ -17,7 +17,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class WorkSheet {
+public class WorkSheet implements AutoCloseable {
     private static final String[] alphabet =
             {
                     "A", "B", "C", "D", "E",
@@ -50,7 +50,7 @@ public class WorkSheet {
         }
     }
 
-    private String m_name;
+    private String sheetName;
 
     private String id;
 
@@ -71,7 +71,7 @@ public class WorkSheet {
     public WorkSheet(String id, String name, OutputStream out, WorkBookWriter writer) throws IOException {
         this.writer = writer;
 
-        m_name = name;
+        sheetName = name;
         this.id = id;
         outputStream = out;
 
@@ -102,14 +102,14 @@ public class WorkSheet {
      * @return the name
      */
     public String getName() {
-        return m_name;
+        return sheetName;
     }
 
     /**
      * @param name the name to set
      */
     public void setName(String name) {
-        m_name = name;
+        sheetName = name;
     }
 
     /**
@@ -291,6 +291,7 @@ public class WorkSheet {
         return this;
     }
 
+    @Override
     public void close() {
         if (outputStream != null) {
             try {
@@ -300,7 +301,7 @@ public class WorkSheet {
             } finally {
                 try {
                     outputStream.close();
-                } catch (Throwable e) {
+                } catch (Throwable ignored) {
                 }
             }
         }

@@ -1,7 +1,6 @@
 package ru.protei.oxmldoc.style;
 
-public class CellStyle
-{
+public class CellStyle {
     private final int id;
 
     private Aligment aligment;
@@ -12,15 +11,14 @@ public class CellStyle
 
     private NumberFormat numberFormat;
 
-    public CellStyle (int id){
+    public CellStyle(int id) {
         this.id = id;
     }
 
     /**
      * @return the id
      */
-    public int getId()
-    {
+    public int getId() {
         return id;
     }
 

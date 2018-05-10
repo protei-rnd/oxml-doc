@@ -3,8 +3,7 @@ package ru.protei.oxmldoc.style;
 import ru.protei.oxmldoc.style.enums.HorizontalAligment;
 import ru.protei.oxmldoc.style.enums.VerticalAligment;
 
-public class Aligment
-{
+public class Aligment {
     private HorizontalAligment horizAlign;
     private Boolean wrapText;
     private VerticalAligment vertAlign;
@@ -14,8 +13,7 @@ public class Aligment
      * @param wrapText
      * @param vertAlign
      */
-    public Aligment(HorizontalAligment horizAlign, Boolean wrapText, VerticalAligment vertAlign)
-    {
+    public Aligment(HorizontalAligment horizAlign, Boolean wrapText, VerticalAligment vertAlign) {
         this.horizAlign = horizAlign;
         this.wrapText = wrapText;
         this.vertAlign = vertAlign;
@@ -24,8 +22,7 @@ public class Aligment
     /**
      * @param horizAlign
      */
-    public Aligment(HorizontalAligment horizAlign)
-    {
+    public Aligment(HorizontalAligment horizAlign) {
         this.horizAlign = horizAlign;
         this.wrapText = false;
         this.vertAlign = VerticalAligment.TOP;

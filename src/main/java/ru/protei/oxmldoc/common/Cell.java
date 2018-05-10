@@ -2,33 +2,30 @@ package ru.protei.oxmldoc.common;
 
 import ru.protei.oxmldoc.style.CellStyle;
 
-public class Cell<T>
-{
+public class Cell<T> {
     private T data;
     private CellStyle style;
 
-    public Cell (T data, CellStyle style){
+    public Cell(T data, CellStyle style) {
         this.data = data;
         this.style = style;
     }
 
-    public boolean isEmpty (){
+    public boolean isEmpty() {
         return data == null;
     }
 
     /**
      * @return the data
      */
-    public T getData()
-    {
+    public T getData() {
         return data;
     }
 
     /**
      * @return the cell style
      */
-    public CellStyle getStyle()
-    {
+    public CellStyle getStyle() {
         return style;
     }
 

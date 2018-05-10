@@ -29,7 +29,8 @@ public class SmartStreamConsumer implements StreamConsumer {
         files.add(file);
     }
 
-    public int filesNumber() {
+    @Override
+    public int getFilesNumber() {
         return files.size();
     }
 

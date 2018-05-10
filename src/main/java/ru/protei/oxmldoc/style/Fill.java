@@ -8,15 +8,14 @@ public class Fill {
     private Color frontColor;
     private final int id;
 
-    public Fill (int id){
+    public Fill(int id) {
         this.id = id;
     }
 
     /**
      * @return id
      */
-    public int getId()
-    {
+    public int getId() {
         return id;
     }
 
