@@ -6,6 +6,23 @@
     <groupId>ru.protei</groupId>
     <artifactId>oxmldoc</artifactId>
     <version>0.01-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>oxml-doc</name>
+    <description>Library for streaming writing and reading .xlsx files. Developed by PROTEI</description>
+    <url>http://protei.ru</url>
+
+    <licenses>
+        <license>
+            <name>MIT</name>
+            <url>https://github.com/protei-rnd/oxml-doc/blob/master/LICENSE</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>https://github.com/protei-rnd/oxml-doc</url>
+    </scm>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
