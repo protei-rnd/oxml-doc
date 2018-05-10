@@ -5,44 +5,44 @@ public class RowStyle {
     private CellStyle style;
     private boolean borderBottom;
     private boolean borderTop;
+
     /**
      * @param height
      * @param style
      * @param borderBottom
      * @param borderTop
      */
-    public RowStyle(int height, CellStyle style, boolean borderBottom, boolean borderTop)
-    {
+    public RowStyle(int height, CellStyle style, boolean borderBottom, boolean borderTop) {
         this.height = height;
         this.style = style;
         this.borderBottom = borderBottom;
         this.borderTop = borderTop;
     }
+
     /**
      * @param height
      * @param borderBottom
      * @param borderTop
      */
-    public RowStyle(int height, boolean borderBottom, boolean borderTop)
-    {
+    public RowStyle(int height, boolean borderBottom, boolean borderTop) {
         this.height = height;
         this.borderBottom = borderBottom;
         this.borderTop = borderTop;
     }
+
     /**
      * @param height
      * @param style
      */
-    public RowStyle(int height, CellStyle style)
-    {
+    public RowStyle(int height, CellStyle style) {
         this.height = height;
         this.style = style;
     }
+
     /**
      * @param height
      */
-    public RowStyle(int height)
-    {
+    public RowStyle(int height) {
         this.height = height;
     }
 

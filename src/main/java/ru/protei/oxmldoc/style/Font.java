@@ -3,7 +3,7 @@ package ru.protei.oxmldoc.style;
 public class Font {
     private final int fontId;
 
-    public Font (int index){
+    public Font(int index) {
         fontId = index;
     }
 
@@ -24,8 +24,7 @@ public class Font {
     /**
      * @return the fontId
      */
-    public int getFontId()
-    {
+    public int getFontId() {
         return fontId;
     }
 
