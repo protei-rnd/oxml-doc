@@ -3,10 +3,10 @@ package ru.protei.oxmldoc.style;
 import ru.protei.oxmldoc.style.enums.FillPattern;
 
 public class Fill {
+    private final int id;
     private FillPattern pattern = FillPattern.NONE;
     private Color backgroundColor;
     private Color frontColor;
-    private final int id;
 
     public Fill(int id) {
         this.id = id;

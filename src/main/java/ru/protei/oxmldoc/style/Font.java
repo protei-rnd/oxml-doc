@@ -2,11 +2,6 @@ package ru.protei.oxmldoc.style;
 
 public class Font {
     private final int fontId;
-
-    public Font(int index) {
-        fontId = index;
-    }
-
     private boolean isBold;
     private String colorTheme;
     private String color;
@@ -20,6 +15,9 @@ public class Font {
     private String charset;
     private String scheme;
     private String fontSize;
+    public Font(int index) {
+        fontId = index;
+    }
 
     /**
      * @return the fontId

@@ -8,6 +8,14 @@ public class NumberFormat {
         this.id = id;
     }
 
+    private static StringBuilder mappend(StringBuilder sb, char appendedChar, int times) {
+        while (times > 0) {
+            sb.append(appendedChar);
+            times--;
+        }
+        return sb;
+    }
+
     public int getId() {
         return id;
     }
@@ -28,13 +36,5 @@ public class NumberFormat {
         StringBuilder sb = mappend(new StringBuilder(), '0', integerDigits).append('.');
         this.format = mappend(sb, '0', fractionDigits).toString();
         return this;
-    }
-
-    private static StringBuilder mappend(StringBuilder sb, char appendedChar, int times) {
-        while (times > 0) {
-            sb.append(appendedChar);
-            times--;
-        }
-        return sb;
     }
 }

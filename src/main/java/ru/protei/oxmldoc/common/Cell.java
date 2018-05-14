@@ -22,15 +22,15 @@ public class Cell<T> {
         return data;
     }
 
+    public void setData(T data) {
+        this.data = data;
+    }
+
     /**
      * @return the cell style
      */
     public CellStyle getStyle() {
         return style;
-    }
-
-    public void setData(T data) {
-        this.data = data;
     }
 
     public void setStyle(CellStyle style) {

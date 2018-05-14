@@ -1,6 +1,6 @@
 package ru.protei.oxmldoc.style.enums;
 
-public enum  HorizontalAligment {
+public enum HorizontalAligment {
     CENTER,
     CENTERCONTINUOUS,
     DISTRIBUTED,

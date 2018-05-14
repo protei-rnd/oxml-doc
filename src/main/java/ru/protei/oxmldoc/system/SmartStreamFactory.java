@@ -12,10 +12,8 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class SmartStreamFactory implements StreamFactory {
-    private static Logger log = Logger.getLogger(SmartStreamFactory.class);
-
     public static final SmartStreamFactory DEFAULT = new SmartStreamFactory(50);
-
+    private static Logger log = Logger.getLogger(SmartStreamFactory.class);
     private Lock lock = new ReentrantLock();
 
     private int maxOpenedFiles;

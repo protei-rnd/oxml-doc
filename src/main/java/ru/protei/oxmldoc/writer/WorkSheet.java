@@ -37,15 +37,15 @@ public class WorkSheet implements AutoCloseable {
     static {
         int i = 0, j = ASZ, k = ASZ * (1 + ASZ);
 
-        for (String str_1 : alphabet) {
-            columnNames[i++] = str_1;
+        for (String first : alphabet) {
+            columnNames[i++] = first;
 
-            for (String str_2 : alphabet) {
-                String ts_1 = str_1 + str_2;
-                columnNames[j++] = ts_1;
+            for (String second : alphabet) {
+                String temp = first + second;
+                columnNames[j++] = temp;
 
-                for (String str_3 : alphabet)
-                    columnNames[k++] = ts_1 + str_3;
+                for (String third : alphabet)
+                    columnNames[k++] = temp + third;
             }
         }
     }
@@ -84,18 +84,47 @@ public class WorkSheet implements AutoCloseable {
         outputStream.write(wsheetCnt.toString().getBytes("UTF-8"));
     }
 
+    public static String escapeXML(String x) {
+        final StringBuilder result = new StringBuilder();
+        final StringCharacterIterator iterator = new StringCharacterIterator(x);
+        char character = iterator.current();
+        while (character != CharacterIterator.DONE) {
+            if (character == '<') {
+                result.append("&lt;");
+            } else if (character == '>') {
+                result.append("&gt;");
+            } else if (character == '\"') {
+                result.append("&quot;");
+            } else if (character == '\'') {
+                result.append("&#039;");
+            } else if (character == '&') {
+                result.append("&amp;");
+            } else {
+                //the char is not a special one
+                //add it to the result as is
+                result.append(character);
+            }
+            character = iterator.next();
+        }
+        return result.toString();
+    }
+
+    private static String convertNumberToRawString(Number number) {
+        String tx = number == null ? "" : number.toString();
+        return tx.replace(',', '.');
+    }
 
     public void addColumnRule(ColumnRule r) {
         columnRules.add(r);
     }
 
+    public List<ColumnRule> getColumnRules() {
+        return Collections.unmodifiableList(columnRules);
+    }
+
     public void setColumnRules(List<ColumnRule> rules) {
         columnRules.clear();
         columnRules.addAll(rules);
-    }
-
-    public List<ColumnRule> getColumnRules() {
-        return Collections.unmodifiableList(columnRules);
     }
 
     /**
@@ -150,32 +179,6 @@ public class WorkSheet implements AutoCloseable {
         }
     }
 
-    public static String escapeXML(String x) {
-        final StringBuilder result = new StringBuilder();
-        final StringCharacterIterator iterator = new StringCharacterIterator(x);
-        char character = iterator.current();
-        while (character != CharacterIterator.DONE) {
-            if (character == '<') {
-                result.append("&lt;");
-            } else if (character == '>') {
-                result.append("&gt;");
-            } else if (character == '\"') {
-                result.append("&quot;");
-            } else if (character == '\'') {
-                result.append("&#039;");
-            } else if (character == '&') {
-                result.append("&amp;");
-            } else {
-                //the char is not a special one
-                //add it to the result as is
-                result.append(character);
-            }
-            character = iterator.next();
-        }
-        return result.toString();
-    }
-
-
     public WorkSheet appendRow(Row r) throws IOException {
         if (rowIndex >= writer.getRowsLimit()) {
             switch (writer.getRowLimitRules()) {
@@ -198,7 +201,6 @@ public class WorkSheet implements AutoCloseable {
         } else
             return doAppendRow(r);
     }
-
 
     protected WorkSheet doAppendRow(Row r) throws IOException, UnsupportedEncodingException {
         writeHeaderIfDidnt();
@@ -313,12 +315,6 @@ public class WorkSheet implements AutoCloseable {
         outputStream.write("</sheetData>".getBytes());
         outputStream.write("</worksheet>".getBytes());
         columnRules.clear();
-    }
-
-
-    private static String convertNumberToRawString(Number number) {
-        String tx = number == null ? "" : number.toString();
-        return tx.replace(',', '.');
     }
 
     /**

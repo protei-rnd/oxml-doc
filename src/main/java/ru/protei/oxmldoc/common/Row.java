@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class Row {
+    private final List<Cell<?>> cells = new ArrayList<>();
     private RowStyle rowStyle;
-    private final List<Cell<?>> cells = new ArrayList<Cell<?>>();
 
     public Row(RowStyle style) {
         this.rowStyle = style;
@@ -37,32 +37,32 @@ public class Row {
     }
 
     public Row append(String x) {
-        cells.add(new Cell<String>(x, null));
+        cells.add(new Cell<>(x, null));
         return this;
     }
 
     public Row append(String x, CellStyle s) {
-        cells.add(new Cell<String>(x, s));
+        cells.add(new Cell<>(x, s));
         return this;
     }
 
     public Row append(Date x) {
-        cells.add(new Cell<Date>(x, null));
+        cells.add(new Cell<>(x, null));
         return this;
     }
 
     public Row append(Date x, CellStyle s) {
-        cells.add(new Cell<Date>(x, s));
+        cells.add(new Cell<>(x, s));
         return this;
     }
 
     public Row append(Number x) {
-        cells.add(new Cell<Number>(x, null));
+        cells.add(new Cell<>(x, null));
         return this;
     }
 
     public Row append(Number x, CellStyle s) {
-        cells.add(new Cell<Number>(x, s));
+        cells.add(new Cell<>(x, s));
         return this;
     }
 

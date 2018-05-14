@@ -21,16 +21,17 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 public class WorkBookWriter implements AutoCloseable {
-    private class SheetDescriptor {
-        WorkSheet sheet;
-        StreamConsumer consumer;
-    }
-
-    private static Logger log = Logger.getLogger(WorkBookWriter.class);
     /**
      * The maximum rows number per one sheet by default
      */
     private final static int ROWS_LIMIT_DEFAULT = 1000000;
+    private static Logger log = Logger.getLogger(WorkBookWriter.class);
+    private final String creator = "OpenXmlDoc-API";
+    private final List<SheetDescriptor> sheets = new ArrayList<>();
+    private final List<Font> fonts = new ArrayList<>();
+    private final List<NumberFormat> numberFormats = new ArrayList<>();
+    private final List<Fill> fills = new ArrayList<>();
+    private final List<CellStyle> styles = new ArrayList<>();
     /**
      * The maximum rows number per one sheet for this instance
      */
@@ -40,14 +41,7 @@ public class WorkBookWriter implements AutoCloseable {
     private StreamFactory streamFactory = SmartStreamFactory.DEFAULT;
     private ZipOutputStream zipOut;
     private WorkSheet currentSheet;
-    private final String creator = "OpenXmlDoc-API";
-    private final List<SheetDescriptor> sheets = new ArrayList<>();
-    private final List<Font> fonts = new ArrayList<>();
-    private final List<NumberFormat> numberFormats = new ArrayList<>();
-    private final List<Fill> fills = new ArrayList<>();
-    private final List<CellStyle> styles = new ArrayList<>();
     private int numFormatStartId = 200;
-
     public WorkBookWriter() {
         this(ROWS_LIMIT_DEFAULT, RowLimitRules.IGNORE);
     }
@@ -72,6 +66,47 @@ public class WorkBookWriter implements AutoCloseable {
         createCellStyle();
         createFill();
         createFill();
+    }
+
+    private static void pumpZipedFile2Stream(InputStream in, OutputStream out) {
+        ZipInputStream zipIn = null;
+        try {
+            byte buf[] = new byte[4096];
+            int read = 0;
+            zipIn = new ZipInputStream(in);
+
+            while (zipIn.getNextEntry() != null) {
+                while ((read = zipIn.read(buf)) > 0) {
+                    out.write(buf, 0, read);
+                }
+            }
+
+            out.flush();
+        } catch (Throwable ignored) {
+
+        } finally {
+            try {
+                if (zipIn != null) {
+                    zipIn.close();
+                }
+            } catch (Throwable ignored) {
+            }
+            ;
+            try {
+                in.close();
+            } catch (Throwable ignored) {
+            }
+            ;
+        }
+    }
+
+    private static ZipEntry putZipEntry(ZipOutputStream zipOut, String name,
+                                        StringBuffer content) throws IOException {
+        ZipEntry entry = new ZipEntry(name);
+        zipOut.putNextEntry(entry);
+        zipOut.write(content.toString().getBytes("UTF-8"));
+        zipOut.closeEntry();
+        return entry;
     }
 
     public void addColumnRule(ColumnRule rule) {
@@ -115,7 +150,6 @@ public class WorkBookWriter implements AutoCloseable {
         this.numberFormats.add(fmt);
         return fmt;
     }
-
 
     public WorkSheet getWorkSheet(String name) {
         WorkSheet sheet = null;
@@ -178,39 +212,6 @@ public class WorkBookWriter implements AutoCloseable {
         currentSheet = desc.sheet;
         sheets.add(desc);
         return currentSheet;
-    }
-
-
-    private static void pumpZipedFile2Stream(InputStream in, OutputStream out) {
-        ZipInputStream zipIn = null;
-        try {
-            byte buf[] = new byte[4096];
-            int read = 0;
-            zipIn = new ZipInputStream(in);
-
-            while (zipIn.getNextEntry() != null) {
-                while ((read = zipIn.read(buf)) > 0) {
-                    out.write(buf, 0, read);
-                }
-            }
-
-            out.flush();
-        } catch (Throwable ignored) {
-
-        } finally {
-            try {
-                if (zipIn != null) {
-                    zipIn.close();
-                }
-            } catch (Throwable ignored) {
-            }
-            ;
-            try {
-                in.close();
-            } catch (Throwable ignored) {
-            }
-            ;
-        }
     }
 
     private void doWrite(ZipOutputStream zipOut) throws IOException {
@@ -523,15 +524,6 @@ public class WorkBookWriter implements AutoCloseable {
         this.fonts.clear();
     }
 
-    private static ZipEntry putZipEntry(ZipOutputStream zipOut, String name,
-                                        StringBuffer content) throws IOException {
-        ZipEntry entry = new ZipEntry(name);
-        zipOut.putNextEntry(entry);
-        zipOut.write(content.toString().getBytes("UTF-8"));
-        zipOut.closeEntry();
-        return entry;
-    }
-
     /**
      * @return the creator
      */
@@ -551,5 +543,10 @@ public class WorkBookWriter implements AutoCloseable {
      */
     public RowLimitRules getRowLimitRules() {
         return rowsLimitRule;
+    }
+
+    private class SheetDescriptor {
+        WorkSheet sheet;
+        StreamConsumer consumer;
     }
 }
