@@ -15,7 +15,7 @@ public class LargeDocTest {
         try (WorkBookWriter writer = new WorkBookWriter(1000, RowLimitRules.SPLIT)) {
             WorkSheet sheet = writer.createNewSheet("sheet");
             Row row = new Row();
-            for (int i = 0; i < 10000; i++) {
+            for (int i = 0; i < 1000000; i++) {
                 for (int j = 0; j < 55; j++)
                     row.append("aaaaa");
                 sheet = sheet.appendRow(row);
