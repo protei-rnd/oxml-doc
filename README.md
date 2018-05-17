@@ -39,7 +39,7 @@ writer.writeTo(bigDoc);
 ```
 
 ---
-# More detailed example^
+# More complex example
 ```java
 try (WorkBookWriter writer = new WorkBookWriter()) {
     // base text font
