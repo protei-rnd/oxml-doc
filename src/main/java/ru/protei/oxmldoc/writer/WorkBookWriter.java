@@ -42,6 +42,7 @@ public class WorkBookWriter implements AutoCloseable {
     private ZipOutputStream zipOut;
     private WorkSheet currentSheet;
     private int numFormatStartId = 200;
+
     public WorkBookWriter() {
         this(ROWS_LIMIT_DEFAULT, RowLimitRules.IGNORE);
     }
