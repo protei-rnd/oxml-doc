@@ -13,6 +13,17 @@ For reading xlsx files it uses Apache POI xlsx parser.
 
 ---
 
+# How to get:
+```xml
+<dependency>
+  <groupId>ru.protei</groupId>
+  <artifactId>oxml-doc</artifactId>
+  <version>0.1.0-SNAPSHOT</version>
+</dependency>
+```
+
+---
+
 # How to use:
 ```java
 WorkSheet sheet = writer.createNewSheet("sheet");
