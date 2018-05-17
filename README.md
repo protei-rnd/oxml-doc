@@ -1,9 +1,7 @@
 # oxml-doc
-Library for streaming writing/reading xlsx files;
+Library for streaming writing xlsx files in OOXML standart;
 
 Aimed for low memory usage when creating big xlsx files. When writing a file, some temporary files are created, but they are zipped, therefore their size should not become an issue.
-
-For reading xlsx files it uses Apache POI xlsx parser.
 
 ---
 # Build status:
