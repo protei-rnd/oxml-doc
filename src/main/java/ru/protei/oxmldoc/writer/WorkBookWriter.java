@@ -126,19 +126,19 @@ public class WorkBookWriter implements AutoCloseable {
         return currentSheet;
     }
 
-    private Fill createFill() {
+    public Fill createFill() {
         Fill f = new Fill(fills.size());
         fills.add(f);
         return f;
     }
 
-    private Font createFont() {
+    public Font createFont() {
         Font font = new Font(fonts.size());
         fonts.add(font);
         return font;
     }
 
-    private CellStyle createCellStyle() {
+    public CellStyle createCellStyle() {
         CellStyle st = new CellStyle(styles.size());
         styles.add(st);
         return st;
